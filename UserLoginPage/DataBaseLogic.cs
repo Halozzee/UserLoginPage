@@ -5,7 +5,7 @@ namespace UserLoginPage
 {
 	public static class DataBaseLogic
 	{
-		const string _connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=learntestdb;Trusted_Connection=True;";
+		const string _connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=testdb;Trusted_Connection=True;";
 
 		public static string RemoveSpecialCharacters(this string str)
 		{
@@ -84,6 +84,25 @@ namespace UserLoginPage
 
 				string sqlExpression = "INSERT INTO site_users(login, password_hash)" +
 					$"VALUES(\'{login}\',\'{passwordHash}\')";
+
+				using (SqlCommand command = new SqlCommand(sqlExpression, connection))
+				{
+					int aff = command.ExecuteNonQuery();
+					return aff > 0;
+				}
+			}
+		}
+
+		public static bool TryChangePassword(string login, string passwordHash)
+		{
+			login = RemoveSpecialCharacters(login);
+			passwordHash = RemoveSpecialCharacters(passwordHash);
+
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				string sqlExpression = $"UPDATE site_users SET password_hash=\'{passwordHash}\' WHERE login=\'{login}\'";
 
 				using (SqlCommand command = new SqlCommand(sqlExpression, connection))
 				{

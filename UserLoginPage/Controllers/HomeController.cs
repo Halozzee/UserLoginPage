@@ -23,6 +23,13 @@ namespace UserLoginPage.Controllers
 			return View("Register");
 		}
 
+		public IActionResult UserProfilePage(string login) 
+		{
+			dynamic d = new System.Dynamic.ExpandoObject();
+			d.Login = UserController.loginToToken.ToList().Find(x=>x.Value == login).Key;
+			return View("UserProfilePage", d);
+		}
+
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{

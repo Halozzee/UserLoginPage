@@ -4,6 +4,7 @@
 	{
 		public UserResponseStatus UserResponseStatus { get; set; }
 		public string ResponseMessage { get; set; }
+		public string Token { get; set; }
 	}
 
 	public enum UserResponseStatus 
